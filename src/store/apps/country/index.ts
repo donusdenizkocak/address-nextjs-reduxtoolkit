@@ -2,7 +2,7 @@ import {createSlice,createAsyncThunk} from "@reduxjs/toolkit"
 import axios from "axios"
 
 export const getCountry=createAsyncThunk('country',async()=>{
-    const response = await axios.get('/country')
+    const response = await axios.get('http://localhost:3080/country')
     return response.data
 }) 
 
@@ -18,7 +18,7 @@ export const appCountrySlice = createSlice({
         state.loading=true
        })
        builder.addCase(getCountry.fulfilled, (state,action) =>{
-       state.data = action.payload.data
+       state.data = action.payload
         state.loading=false
        })
        builder.addCase(getCountry.rejected, (state) =>{

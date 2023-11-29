@@ -1,11 +1,13 @@
 'use client'
 
+
 import { AppDispatch, RootState } from "@/store"
 import { getCountry } from "@/store/apps/country"
+import { Inter } from "next/font/google"
 import { useEffect } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
-
+const inter =Inter({subsets :['latin']})
 
 
 export default function Page() {
@@ -14,15 +16,28 @@ export default function Page() {
 
     const dispatch = useDispatch<AppDispatch>()
 
+    const loading: boolean = useSelector((state: RootState) => state.country.loading)
+    const data: never[] = useSelector((state: RootState) => state.country.data)
+
     useEffect(() => {
-      dispatch(getCountry())
+        dispatch(getCountry())
     }, [dispatch])
-    
+
 
     return (
         <>
-            <h1>Hello Next.js</h1>
-            <button>Ülkeleri Getir</button>
+            {
+                loading ?
+                    (<h1>Yükleniyor</h1>)
+                    :
+                    (<>
+                        <h1>Hello World</h1>
+                        <div>{data.length >0 && data[0].city.map((k:any) =>{
+                            return <div>{k.name}</div>
+                        })}</div>
+                    </>)
+            }
         </>
+
     )
 }
